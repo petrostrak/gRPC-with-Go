@@ -1,6 +1,9 @@
 package sample
 
-import "github.com/petrostrak/gRPC-with-Go/pb"
+import (
+	"github.com/golang/protobuf/ptypes"
+	"github.com/petrostrak/gRPC-with-Go/pb"
+)
 
 // NewKeyboard returns a new sample
 func NewKeyboard() *pb.Keyboard {
@@ -45,5 +48,64 @@ func NewGPU() *pb.GPU {
 		MinGhz: minGhz,
 		MaxGhz: maxGhz,
 		Memory: memory,
+	}
+}
+
+func NewRam() *pb.Memory {
+	return &pb.Memory{
+		Value: uint64(randomInt(4, 64)),
+		Unit:  pb.Memory_GIGABYTE,
+	}
+}
+
+func NewSSD() *pb.Storage {
+	return &pb.Storage{
+		Drive: pb.Storage_SSD,
+		Memory: &pb.Memory{
+			Value: uint64(randomInt(128, 1024)),
+			Unit:  pb.Memory_GIGABYTE,
+		},
+	}
+}
+
+func NewHDD() *pb.Storage {
+	return &pb.Storage{
+		Drive: pb.Storage_HDD,
+		Memory: &pb.Memory{
+			Value: uint64(randomInt(1, 6)),
+			Unit:  pb.Memory_TERABYTE,
+		},
+	}
+}
+
+func NewScreen() *pb.Screen {
+	return &pb.Screen{
+		SizeInch:   randomFloat32(13, 17),
+		Resolution: randomScreenResolution(),
+		Panel:      randomScreenPanel(),
+		Multitouch: randomBool(),
+	}
+}
+
+func NewLaptop() *pb.Laptop {
+	brand := randomLaptopBrand()
+	name := randomLaptopName(brand)
+
+	return &pb.Laptop{
+		Id:       randomID(),
+		Brand:    brand,
+		Name:     name,
+		Cpu:      NewCPU(),
+		Memory:   NewRam(),
+		Gpus:     []*pb.GPU{NewGPU()},
+		Storages: []*pb.Storage{NewHDD(), NewSSD()},
+		Screen:   NewScreen(),
+		Keyboard: NewKeyboard(),
+		Weight: &pb.Laptop_WeightKg{
+			WeightKg: randomFloat64(1.0, 3.0),
+		},
+		PriceUsd:    randomFloat64(1500, 3000),
+		ReleaseYear: uint32(randomInt(2015, 2020)),
+		UpdatedAt:   ptypes.TimestampNow(),
 	}
 }

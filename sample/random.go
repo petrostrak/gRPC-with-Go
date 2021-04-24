@@ -3,6 +3,7 @@ package sample
 import (
 	"math/rand"
 
+	"github.com/google/uuid"
 	"github.com/petrostrak/gRPC-with-Go/pb"
 )
 
@@ -82,4 +83,53 @@ func randomStringFromSet(a ...string) string {
 	}
 
 	return a[rand.Intn(n)]
+}
+
+func randomFloat32(min, max float32) float32 {
+	return min + rand.Float32()*(max-min)
+
+}
+
+func randomScreenResolution() *pb.Screen_Resolution {
+	height := randomInt(1080, 4320)
+	width := height * 16 / 9
+
+	return &pb.Screen_Resolution{
+		Height: uint32(height),
+		Width:  uint32(width),
+	}
+}
+
+func randomScreenPanel() pb.Screen_Panel {
+	if rand.Intn(2) == 1 {
+		return pb.Screen_IPS
+	}
+
+	return pb.Screen_OLED
+}
+
+func randomID() string {
+	return uuid.New().String()
+}
+
+func randomLaptopBrand() string {
+	return randomStringFromSet(
+		"Apple",
+		"Dell",
+		"Lenovo",
+		"Huawei",
+	)
+}
+
+func randomLaptopName(name string) string {
+	switch name {
+	case "Apple":
+		return randomStringFromSet("MacBook Air", "Macbook Pro")
+	case "Dell":
+		return randomStringFromSet("Latitude", "XPS", "Alienware")
+	case "Lenovo":
+		return randomStringFromSet("Thinkpad X1", "Thinkpad P1", "Thingpad P53")
+	default:
+		return "Matebook 13"
+	}
 }
