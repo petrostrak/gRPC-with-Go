@@ -1,0 +1,62 @@
+{
+  "id": "4a739dd5-a490-4381-a99d-cc57b9919e78",
+  "brand": "Dell",
+  "name": "Latitude",
+  "cpu": {
+    "brand": "AMD",
+    "name": "Ryzen 3 PRO 2700U",
+    "number_cores": 8,
+    "number_threads": 11,
+    "min_ghz": 2.0984555288262143,
+    "max_ghz": 2.552603107028386
+  },
+  "memory": {
+    "value": "63",
+    "unit": "GIGABYTE"
+  },
+  "gpus": [
+    {
+      "brand": "NVIDIA",
+      "name": "GTX 1600-Ti",
+      "min_ghz": 1.4068199804950483,
+      "max_ghz": 1.533917028612668,
+      "memory": {
+        "value": "6",
+        "unit": "GIGABYTE"
+      }
+    }
+  ],
+  "storages": [
+    {
+      "drive": "HDD",
+      "memory": {
+        "value": "5",
+        "unit": "TERABYTE"
+      }
+    },
+    {
+      "drive": "SSD",
+      "memory": {
+        "value": "670",
+        "unit": "GIGABYTE"
+      }
+    }
+  ],
+  "screen": {
+    "size_inch": 14.132136,
+    "resolution": {
+      "width": 2055,
+      "height": 1156
+    },
+    "panel": "IPS",
+    "multitouch": false
+  },
+  "keyboard": {
+    "layout": "QWERTY",
+    "backlit": false
+  },
+  "weight_kg": 2.1413465521420454,
+  "price_usd": 2793.7371561718296,
+  "release_year": 2018,
+  "updated_at": "2021-04-24T12:33:38.824749600Z"
+}

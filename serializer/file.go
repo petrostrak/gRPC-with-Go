@@ -4,8 +4,21 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"google.golang.org/protobuf/proto"
+	"github.com/golang/protobuf/proto"
 )
+
+func WriteProtobufToJSON(msg proto.Message, filename string) error {
+	data, err := ProtobufToJSON(msg)
+	if err != nil {
+		return fmt.Errorf("cannot marshal proto message to JSON: %w", err)
+	}
+
+	if err = ioutil.WriteFile(filename, []byte(data), 0644); err != nil {
+		return fmt.Errorf("cannot write JSON data to file: %w", err)
+	}
+
+	return nil
+}
 
 // WriteProtobufToBinaryFIle writes protobuf msg to binary file
 func WriteProtobufToBinaryFIle(msg proto.Message, filename string) error {
