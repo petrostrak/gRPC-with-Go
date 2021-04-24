@@ -2,7 +2,7 @@ package sample
 
 import (
 	"github.com/golang/protobuf/ptypes"
-	"github.com/petrostrak/gRPC-with-Go/pb"
+	"github.com/petrostrak/gRPC-with-Go/pb/pb"
 )
 
 // NewKeyboard returns a new sample

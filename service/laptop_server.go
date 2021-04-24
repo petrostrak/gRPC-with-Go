@@ -6,13 +6,13 @@ import (
 	"log"
 
 	"github.com/google/uuid"
-	"github.com/petrostrak/gRPC-with-Go/pb"
+	"github.com/petrostrak/gRPC-with-Go/pb/pb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
 
 type LaptopServer struct {
-	Store LaptopStore
+	laptopStore LaptopStore
 }
 
 func NewLaptopServer(store LaptopStore) *LaptopServer {
@@ -38,7 +38,7 @@ func (s *LaptopServer) CreateLaptop(ctx context.Context, req *pb.CreateLaptopReq
 	}
 
 	// save new laptop in memory storage
-	if err := s.Store.Save(laptop); err != nil {
+	if err := s.laptopStore.Save(laptop); err != nil {
 		code := codes.AlreadyExists
 		if errors.Is(err, ErrAlreadyExists) {
 			code = codes.AlreadyExists

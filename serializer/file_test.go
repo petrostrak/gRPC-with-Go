@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/golang/protobuf/proto"
-	"github.com/petrostrak/gRPC-with-Go/pb"
+	"github.com/petrostrak/gRPC-with-Go/pb/pb"
 	"github.com/petrostrak/gRPC-with-Go/sample"
 	"github.com/petrostrak/gRPC-with-Go/serializer"
 	"github.com/stretchr/testify/require"

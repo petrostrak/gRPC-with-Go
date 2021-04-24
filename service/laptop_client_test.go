@@ -5,7 +5,7 @@ import (
 	"net"
 	"testing"
 
-	"github.com/petrostrak/gRPC-with-Go/pb"
+	"github.com/petrostrak/gRPC-with-Go/pb/pb"
 	"github.com/petrostrak/gRPC-with-Go/sample"
 	"github.com/petrostrak/gRPC-with-Go/serializer"
 	"github.com/petrostrak/gRPC-with-Go/service"
@@ -16,7 +16,8 @@ import (
 func TestClientCreateLaptop(t *testing.T) {
 	t.Parallel()
 
-	laptopServer, serverAddress := startTestLaptopServer(t)
+	laptopStore := service.NewInMemoryLaptopStore()
+	serverAddress := startTestLaptopServer(t, laptopStore)
 	laptopClient := newTestLaptopClient(t, serverAddress)
 
 	laptop := sample.NewLaptop()
@@ -31,7 +32,7 @@ func TestClientCreateLaptop(t *testing.T) {
 	require.Equal(t, expectedId, res.Id)
 
 	// check that the laptop is saved to the store
-	other, err := laptopServer.Store.Find(res.Id)
+	other, err := laptopStore.Find(res.Id)
 	if err != nil {
 		require.NoError(t, err)
 		require.NotNil(t, other)
@@ -58,8 +59,8 @@ func newTestLaptopClient(t *testing.T, serverAddress string) pb.LaptopServiceCli
 	return pb.NewLaptopServiceClient(conn)
 }
 
-func startTestLaptopServer(t *testing.T) (*service.LaptopServer, string) {
-	laptopServer := service.NewLaptopServer(service.NewInMemoryLaptopStore())
+func startTestLaptopServer(t *testing.T, laptopStore service.LaptopStore) string {
+	laptopServer := service.NewLaptopServer(laptopStore)
 
 	grpcServer := grpc.NewServer()
 	pb.RegisterLaptopServiceServer(grpcServer, laptopServer)
@@ -67,7 +68,7 @@ func startTestLaptopServer(t *testing.T) (*service.LaptopServer, string) {
 	listener, err := net.Listen("tcp", ":0")
 	require.NoError(t, err)
 
-	grpc.Server(listener)
+	grpcServer.Serve(listener)
 
-	return laptopServer, listener.Addr().String()
+	return listener.Addr().String()
 }

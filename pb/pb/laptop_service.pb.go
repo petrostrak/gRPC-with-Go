@@ -7,6 +7,10 @@
 package pb
 
 import (
+	context "context"
+	grpc "google.golang.org/grpc"
+	codes "google.golang.org/grpc/codes"
+	status "google.golang.org/grpc/status"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -215,4 +219,84 @@ func file_laptop_service_proto_init() {
 	file_laptop_service_proto_rawDesc = nil
 	file_laptop_service_proto_goTypes = nil
 	file_laptop_service_proto_depIdxs = nil
+}
+
+// Reference imports to suppress errors if they are not otherwise used.
+var _ context.Context
+var _ grpc.ClientConnInterface
+
+// This is a compile-time assertion to ensure that this generated file
+// is compatible with the grpc package it is being compiled against.
+const _ = grpc.SupportPackageIsVersion6
+
+// LaptopServiceClient is the client API for LaptopService service.
+//
+// For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
+type LaptopServiceClient interface {
+	CreateLaptop(ctx context.Context, in *CreateLaptopRequest, opts ...grpc.CallOption) (*CreateLaptopResponse, error)
+}
+
+type laptopServiceClient struct {
+	cc grpc.ClientConnInterface
+}
+
+func NewLaptopServiceClient(cc grpc.ClientConnInterface) LaptopServiceClient {
+	return &laptopServiceClient{cc}
+}
+
+func (c *laptopServiceClient) CreateLaptop(ctx context.Context, in *CreateLaptopRequest, opts ...grpc.CallOption) (*CreateLaptopResponse, error) {
+	out := new(CreateLaptopResponse)
+	err := c.cc.Invoke(ctx, "/proto.LaptopService/CreateLaptop", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+// LaptopServiceServer is the server API for LaptopService service.
+type LaptopServiceServer interface {
+	CreateLaptop(context.Context, *CreateLaptopRequest) (*CreateLaptopResponse, error)
+}
+
+// UnimplementedLaptopServiceServer can be embedded to have forward compatible implementations.
+type UnimplementedLaptopServiceServer struct {
+}
+
+func (*UnimplementedLaptopServiceServer) CreateLaptop(context.Context, *CreateLaptopRequest) (*CreateLaptopResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateLaptop not implemented")
+}
+
+func RegisterLaptopServiceServer(s *grpc.Server, srv LaptopServiceServer) {
+	s.RegisterService(&_LaptopService_serviceDesc, srv)
+}
+
+func _LaptopService_CreateLaptop_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateLaptopRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(LaptopServiceServer).CreateLaptop(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/proto.LaptopService/CreateLaptop",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(LaptopServiceServer).CreateLaptop(ctx, req.(*CreateLaptopRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+var _LaptopService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "proto.LaptopService",
+	HandlerType: (*LaptopServiceServer)(nil),
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "CreateLaptop",
+			Handler:    _LaptopService_CreateLaptop_Handler,
+		},
+	},
+	Streams:  []grpc.StreamDesc{},
+	Metadata: "laptop_service.proto",
 }

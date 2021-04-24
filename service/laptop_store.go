@@ -6,7 +6,7 @@ import (
 	"sync"
 
 	"github.com/jinzhu/copier"
-	"github.com/petrostrak/gRPC-with-Go/pb"
+	"github.com/petrostrak/gRPC-with-Go/pb/pb"
 )
 
 var (
