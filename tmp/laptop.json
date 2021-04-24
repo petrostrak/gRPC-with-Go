@@ -1,27 +1,27 @@
 {
-  "id": "4a739dd5-a490-4381-a99d-cc57b9919e78",
-  "brand": "Dell",
-  "name": "Latitude",
+  "id": "a190b5f5-53b8-4850-a780-69ee51b0440a",
+  "brand": "Apple",
+  "name": "MacBook Air",
   "cpu": {
-    "brand": "AMD",
-    "name": "Ryzen 3 PRO 2700U",
-    "number_cores": 8,
+    "brand": "Intel",
+    "name": "Core i3-9980HK",
+    "number_cores": 2,
     "number_threads": 11,
-    "min_ghz": 2.0984555288262143,
-    "max_ghz": 2.552603107028386
+    "min_ghz": 2.120198953095602,
+    "max_ghz": 3.5879466696453712
   },
   "memory": {
-    "value": "63",
+    "value": "24",
     "unit": "GIGABYTE"
   },
   "gpus": [
     {
       "brand": "NVIDIA",
       "name": "GTX 1600-Ti",
-      "min_ghz": 1.4068199804950483,
-      "max_ghz": 1.533917028612668,
+      "min_ghz": 1.353034447993946,
+      "max_ghz": 1.663487286271515,
       "memory": {
-        "value": "6",
+        "value": "4",
         "unit": "GIGABYTE"
       }
     }
@@ -30,33 +30,33 @@
     {
       "drive": "HDD",
       "memory": {
-        "value": "5",
+        "value": "6",
         "unit": "TERABYTE"
       }
     },
     {
       "drive": "SSD",
       "memory": {
-        "value": "670",
+        "value": "251",
         "unit": "GIGABYTE"
       }
     }
   ],
   "screen": {
-    "size_inch": 14.132136,
+    "size_inch": 14.607414,
     "resolution": {
-      "width": 2055,
-      "height": 1156
+      "width": 3886,
+      "height": 2186
     },
-    "panel": "IPS",
-    "multitouch": false
+    "panel": "OLED",
+    "multitouch": true
   },
   "keyboard": {
-    "layout": "QWERTY",
-    "backlit": false
+    "layout": "AZERTY",
+    "backlit": true
   },
-  "weight_kg": 2.1413465521420454,
-  "price_usd": 2793.7371561718296,
+  "weight_kg": 1.4242605517158795,
+  "price_usd": 2476.5056987435337,
   "release_year": 2018,
-  "updated_at": "2021-04-24T12:33:38.824749600Z"
+  "updated_at": "2021-04-24T12:38:12.746021900Z"
 }
