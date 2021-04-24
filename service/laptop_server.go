@@ -12,11 +12,11 @@ import (
 )
 
 type LaptopServer struct {
-	Store InMemoryLaptopStore
+	Store LaptopStore
 }
 
-func NewLaptopServer() *LaptopServer {
-	return &LaptopServer{}
+func NewLaptopServer(store LaptopStore) *LaptopServer {
+	return &LaptopServer{store}
 }
 
 // CreateLaptop is a unary RPC to create a new laptop
