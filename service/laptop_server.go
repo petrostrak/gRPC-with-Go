@@ -6,7 +6,7 @@ import (
 	"log"
 
 	"github.com/google/uuid"
-	"github.com/petrostrak/gRPC-with-Go/pb/pb"
+	"github.com/petrostrak/gRPC-with-Go/pb"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -66,4 +66,26 @@ func (s *LaptopServer) CreateLaptop(ctx context.Context, req *pb.CreateLaptopReq
 	}
 
 	return res, nil
+}
+
+func (s *LaptopServer) SearchLaptop(req *pb.SearchLaptopRequest, stream pb.LaptopService_SearchLaptopServer) error {
+	filter := req.GetLaptop()
+	log.Printf("receive a search-laptop request with filter: %w", filter)
+
+	if err := s.laptopStore.Search(
+		filter, func(l *pb.Laptop) error {
+			res := &pb.SearchLaptopResponse{Laptop: l}
+
+			if err := stream.Send(res); err != nil {
+				return err
+			}
+
+			log.Printf("sent laptop with id: %s", l.GetId())
+			return nil
+		},
+	); err != nil {
+		return status.Errorf(codes.Internal, "unexpected error: %v", err)
+	}
+
+	return nil
 }
