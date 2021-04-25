@@ -5,7 +5,7 @@ import (
 	"net"
 	"testing"
 
-	"github.com/petrostrak/gRPC-with-Go/pb/pb"
+	"github.com/petrostrak/gRPC-with-Go/pb"
 	"github.com/petrostrak/gRPC-with-Go/sample"
 	"github.com/petrostrak/gRPC-with-Go/serializer"
 	"github.com/petrostrak/gRPC-with-Go/service"

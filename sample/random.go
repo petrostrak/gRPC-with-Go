@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/google/uuid"
-	"github.com/petrostrak/gRPC-with-Go/pb/pb"
+	"github.com/petrostrak/gRPC-with-Go/pb"
 )
 
 func init() {
