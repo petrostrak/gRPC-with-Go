@@ -19,10 +19,11 @@ const maxImageSize = 1 << 20
 type LaptopServer struct {
 	laptopStore LaptopStore
 	imageStore  ImageStore
+	ratingStore RatingStore
 }
 
-func NewLaptopServer(laptopStore LaptopStore, imageStore ImageStore) *LaptopServer {
-	return &LaptopServer{laptopStore, imageStore}
+func NewLaptopServer(laptopStore LaptopStore, imageStore ImageStore, ratingStore RatingStore) *LaptopServer {
+	return &LaptopServer{laptopStore, imageStore, ratingStore}
 }
 
 // CreateLaptop is a unary RPC to create a new laptop
@@ -94,6 +95,10 @@ func (s *LaptopServer) SearchLaptop(req *pb.SearchLaptopRequest, stream pb.Lapto
 		return status.Errorf(codes.Internal, "unexpected error: %v", err)
 	}
 
+	return nil
+}
+
+func (s *LaptopServer) RateLaptop(stream pb.LaptopService_RateLaptopServer) error {
 	return nil
 }
 
