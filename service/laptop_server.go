@@ -68,11 +68,12 @@ func (s *LaptopServer) CreateLaptop(ctx context.Context, req *pb.CreateLaptopReq
 	return res, nil
 }
 
-func (s *LaptopServer) SearchLaptop(req *pb.SearchLaptopRequest, stream pb.LaptopService_SearchLaptopServer) error {
+func (s *LaptopServer) SearchLaptop(ctx context.Context, req *pb.SearchLaptopRequest, stream pb.LaptopService_SearchLaptopServer) error {
 	filter := req.GetLaptop()
 	log.Printf("receive a search-laptop request with filter: %w", filter)
 
 	if err := s.laptopStore.Search(
+		stream.Context(),
 		filter, func(l *pb.Laptop) error {
 			res := &pb.SearchLaptopResponse{Laptop: l}
 

@@ -1,8 +1,10 @@
 package service
 
 import (
+	"context"
 	"errors"
 	"fmt"
+	"log"
 	"sync"
 
 	"github.com/jinzhu/copier"
@@ -16,7 +18,7 @@ var (
 type LaptopStore interface {
 	Save(*pb.Laptop) error
 	Find(string) (*pb.Laptop, error)
-	Search(*pb.Filter, func(*pb.Laptop) error) error
+	Search(context.Context, *pb.Filter, func(*pb.Laptop) error) error
 }
 
 type InMemoryLaptopStore struct {
@@ -102,11 +104,16 @@ func isQualified(filter *pb.Filter, laptop *pb.Laptop) bool {
 	return true
 }
 
-func (s *InMemoryLaptopStore) Search(filter *pb.Filter, found func(laptop *pb.Laptop) error) error {
+func (s *InMemoryLaptopStore) Search(ctx context.Context, filter *pb.Filter, found func(laptop *pb.Laptop) error) error {
 	s.mutex.RLock()
 	defer s.mutex.RUnlock()
 
 	for _, laptop := range s.data {
+		if ctx.Err() == context.Canceled || ctx.Err() == context.DeadlineExceeded {
+			log.Print("context is cancelled")
+			return errors.New("context is cancelled")
+		}
+
 		if isQualified(filter, laptop) {
 			// deep cory
 			other, err := deepCopy(laptop)
