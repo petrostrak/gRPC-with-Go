@@ -68,7 +68,7 @@ func (s *LaptopServer) CreateLaptop(ctx context.Context, req *pb.CreateLaptopReq
 	return res, nil
 }
 
-func (s *LaptopServer) SearchLaptop(ctx context.Context, req *pb.SearchLaptopRequest, stream pb.LaptopService_SearchLaptopServer) error {
+func (s *LaptopServer) SearchLaptop(req *pb.SearchLaptopRequest, stream pb.LaptopService_SearchLaptopServer) error {
 	filter := req.GetLaptop()
 	log.Printf("receive a search-laptop request with filter: %w", filter)
 
@@ -88,5 +88,9 @@ func (s *LaptopServer) SearchLaptop(ctx context.Context, req *pb.SearchLaptopReq
 		return status.Errorf(codes.Internal, "unexpected error: %v", err)
 	}
 
+	return nil
+}
+
+func (s *LaptopServer) UploadImage(stream pb.LaptopService_UploadImageServer) error {
 	return nil
 }
