@@ -46,6 +46,16 @@ func streamInterceptor(srv interface{}, stream grpc.ServerStream, info *grpc.Str
 	return handler(srv, stream)
 }
 
+func accessibleRoles() map[string][]string {
+	const laptopServicePath = "/petrostrak.gRPC-with-Go.LaptopService/"
+
+	return map[string][]string{
+		laptopServicePath + "CreateLaptop": {"admin"},
+		laptopServicePath + "UploadImage":  {"admin"},
+		laptopServicePath + "RateLaptop":   {"admin", "user"},
+	}
+}
+
 func main() {
 	port := flag.Int("port", 0, "the server port")
 	flag.Parse()
@@ -66,10 +76,12 @@ func main() {
 
 	laptopServer := service.NewLaptopServer(laptopStore, imageStore, ratingStore)
 
+	interceptor := service.NewAuthInterceptor(jwtManager, accessibleRoles())
+
 	// add gRPC interceptor
 	grpcServer := grpc.NewServer(
-		grpc.UnaryInterceptor(UnaryInterceptor),
-		grpc.StreamInterceptor(streamInterceptor),
+		grpc.UnaryInterceptor(interceptor.Unary()),
+		grpc.StreamInterceptor(interceptor.Stream()),
 	)
 
 	pb.RegisterAuthServiceServer(grpcServer, authServer)
