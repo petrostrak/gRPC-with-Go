@@ -9,6 +9,7 @@ import (
 	"github.com/petrostrak/gRPC-with-Go/pb"
 	"github.com/petrostrak/gRPC-with-Go/service"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 func main() {
@@ -23,6 +24,10 @@ func main() {
 	laptopServer := service.NewLaptopServer(laptopStore, imageStore, ratingStore)
 	grpcServer := grpc.NewServer()
 	pb.RegisterLaptopServiceServer(grpcServer, laptopServer)
+
+	// call evans with:
+	// evans -r repl -p 8080
+	reflection.Register(grpcServer)
 
 	address := fmt.Sprintf("0.0.0.0:%d", *port)
 	listener, err := net.Listen("tpc", address)
