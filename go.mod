@@ -3,6 +3,7 @@ module github.com/petrostrak/gRPC-with-Go
 go 1.16
 
 require (
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/golang/protobuf v1.5.2
 	github.com/google/uuid v1.2.0
 	github.com/jinzhu/copier v0.3.0
