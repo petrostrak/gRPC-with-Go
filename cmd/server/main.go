@@ -6,12 +6,35 @@ import (
 	"fmt"
 	"log"
 	"net"
+	"time"
 
 	"github.com/petrostrak/gRPC-with-Go/pb"
 	"github.com/petrostrak/gRPC-with-Go/service"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )
+
+const (
+	secretKey     = "secret"
+	tokenDuration = 15 * time.Minute
+)
+
+func seedUsers(userStore service.UserStore) error {
+	if err := createUser(userStore, "admin1", "secret", "admin"); err != nil {
+		return err
+	}
+
+	return createUser(userStore, "user1", "secret", "user")
+}
+
+func createUser(userStore service.UserStore, username, password, role string) error {
+	user, err := service.NewUser(username, password, role)
+	if err != nil {
+		return err
+	}
+
+	return userStore.Save(user)
+}
 
 func UnaryInterceptor(ctx context.Context, req interface{}, info *grpc.UnaryServerInfo, handler grpc.UnaryHandler) (interface{}, error) {
 	log.Println("--> unary interceptor: ", info.FullMethod)
@@ -28,6 +51,15 @@ func main() {
 	flag.Parse()
 	log.Printf("start server on port %d", port)
 
+	userStore := service.NewInMemoryUserStore()
+
+	if err := seedUsers(userStore); err != nil {
+		log.Fatal("cannot seed users")
+	}
+
+	jwtManager := service.NewJWTManager(secretKey, tokenDuration)
+	authServer := service.NewAuthServer(userStore, jwtManager)
+
 	laptopStore := service.NewInMemoryLaptopStore()
 	imageStore := service.NewDiskImageStore("img")
 	ratingStore := service.NewInMemoryRatingStore()
@@ -39,6 +71,8 @@ func main() {
 		grpc.UnaryInterceptor(UnaryInterceptor),
 		grpc.StreamInterceptor(streamInterceptor),
 	)
+
+	pb.RegisterAuthServiceServer(grpcServer, authServer)
 	pb.RegisterLaptopServiceServer(grpcServer, laptopServer)
 
 	// call evans with:

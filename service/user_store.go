@@ -4,7 +4,7 @@ import "sync"
 
 type UserStore interface {
 	Save(*User) error
-	Fin(string) (*User, error)
+	Find(string) (*User, error)
 }
 
 // InMemoryUserStore stores users in memory
