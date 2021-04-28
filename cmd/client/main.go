@@ -129,6 +129,8 @@ const (
 	username        = "admin1"
 	password        = "secret"
 	refreshDuration = 30 * time.Second
+	clientCertFile  = "cert/client-cert.pem"
+	clientKeyFile   = "cert/client-key.pem"
 )
 
 func authMethods() map[string]bool {
@@ -153,9 +155,16 @@ func loadTLSCredentials() (credentials.TransportCredentials, error) {
 		return nil, fmt.Errorf("failed to add server CA's certificate")
 	}
 
+	// Load clients's certificate and private key
+	clientCert, err := tls.LoadX509KeyPair(clientCertFile, clientKeyFile)
+	if err != nil {
+		return nil, err
+	}
+
 	// Create the credentials and return it
 	config := &tls.Config{
-		RootCAs: certPool,
+		Certificates: []tls.Certificate{clientCert},
+		RootCAs:      certPool,
 	}
 
 	return credentials.NewTLS(config), nil
