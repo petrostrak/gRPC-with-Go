@@ -92,7 +92,7 @@ func main() {
 	reflection.Register(grpcServer)
 
 	address := fmt.Sprintf("0.0.0.0:%d", *port)
-	listener, err := net.Listen("tpc", address)
+	listener, err := net.Listen("tcp", address)
 	if err != nil {
 		log.Fatal("cannot start server:", err)
 	}
